@@ -62,3 +62,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.summernote,
+.custom-summernote {
+    display: none;
+}

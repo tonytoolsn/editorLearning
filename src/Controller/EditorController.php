@@ -80,14 +80,25 @@ final class EditorController extends AbstractController
         return $response;
     }
 
-    #[Route('/api/editor/images/{uuid}', name: 'api_editor_image_delete', methods: ['DELETE'])]
-    public function deleteImage(string $uuid): Response
+    #[Route('/api/editor/images/{uuidOrFilename}', name: 'api_editor_image_delete', methods: ['DELETE'])]
+    public function deleteImage(string $uuidOrFilename): Response
     {
         try {
-            $this->service->deleteImage($uuid);
-            return $this->json(['status' => 'success']);
+            $this->service->deleteImage($uuidOrFilename);
+            return $this->json([
+                'status' => 'success',
+                'message' => '圖片已成功刪除'
+            ]);
         } catch (NotFoundHttpException | AccessDeniedHttpException $e) {
-            return $this->json(['error' => $e->getMessage()], $e->getStatusCode());
+            return $this->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], $e->getStatusCode());
+        } catch (\Throwable $e) {
+            return $this->json([
+                'status' => 'error',
+                'message' => '系統錯誤',
+            ], 500);
         }
     }
 }

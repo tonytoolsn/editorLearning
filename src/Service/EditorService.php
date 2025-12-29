@@ -149,23 +149,32 @@ class EditorService
         }
     }
 
-    public function deleteImage(string $uuid)
+    public function deleteImage(string $uuidOrFilename)
     {
         $upload = $this->em->getRepository(Upload::class)
-            ->findOneBy(['uuid' => $uuid]);
+            ->findOneBy(['uuid' => $uuidOrFilename]);
+
+        if (!$upload) {
+            // 如果找不到，再試著用 filename 找 (公開圖片)
+            $upload = $this->em->getRepository(Upload::class)
+                ->findOneBy(['storedFilename' => $uuidOrFilename]);
+
+            if (!$upload) {
+                throw new NotFoundHttpException('找不到圖片');
+            }
+        }
 
         // if ($upload->getUser() !== $currentUser) {
         //     throw new AccessDeniedHttpException('無權刪除此圖片');
         // }
 
-        dd($upload);
-
         if (!$upload) {
             throw new NotFoundHttpException('圖片不存在');
         }
 
-        $this->deleteFile($upload);
-        $this->em->remove($upload);
+        // $this->deleteFile($upload);
+        // $this->em->remove($upload);
+        $upload->softDelete();
         $this->em->flush();
     }
 
@@ -176,15 +185,19 @@ class EditorService
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
-        $uuids = [];
+        $uuidOrFilenames = [];
 
         foreach ($dom->getElementsByTagName('img') as $img) {
-            if ($img->hasAttribute('data-uuid')) {
-                $uuids[] = $img->getAttribute('data-uuid');
+            if ($img->hasAttribute('src')) {
+                $src = $img->getAttribute('src');
+                $uuidOrFilename = basename(parse_url($src, PHP_URL_PATH));
+                if ($uuidOrFilename) {
+                    $uuidOrFilenames[] = $uuidOrFilename;
+                }
             }
         }
 
-        return array_unique($uuids);
+        return array_unique($uuidOrFilenames);
     }
 
     public function attachImagesToEntity(
@@ -193,14 +206,23 @@ class EditorService
         int $entityId,
         string $html
     ) {
-        $uuids = $this->extractImageUuidsFromHtml($html);
+        $uuidOrFilenames = $this->extractImageUuidsFromHtml($html);
 
-        foreach ($uuids as $uuid) {
+        foreach ($uuidOrFilenames as $uuidOrFilename) {
             $upload = $this->em->getRepository(Upload::class)
-                ->findOneBy(['uuid' => $uuid]);
+                ->findOneBy([
+                    'uuid' => $uuidOrFilename
+                ]);
 
             if (!$upload) {
-                continue; // 防止亂傳 uuid
+                $upload = $this->em->getRepository(Upload::class)
+                    ->findOneBy([
+                        'storedFilename' => $uuidOrFilename
+                    ]);
+
+                if (!$upload) {
+                    continue;
+                }
             }
 
             $upload->attachToEntity(
@@ -219,7 +241,7 @@ class EditorService
 
     public function syncImagesWithEntity(string $entityType, string $fieldName, int $entityId, string $html)
     {
-        $currentUuids = $this->extractImageUuidsFromHtml($html);
+        $uuidOrFilenames = $this->extractImageUuidsFromHtml($html);
 
         $uploads = $this->em->getRepository(Upload::class)->findBy([
             'entityType' => $entityType,
@@ -228,14 +250,24 @@ class EditorService
         ]);
 
         foreach ($uploads as $upload) {
-            if (!in_array($upload->getUuid(), $currentUuids)) {
-                $upload->softDelete(); // soft delete
+            if (
+                !in_array($upload->getUuid(), $uuidOrFilenames) &&
+                !in_array($upload->getStoredFilename(), $uuidOrFilenames)
+            ) {
+                $upload->softDelete();
             }
         }
 
-        foreach ($currentUuids as $uuid) {
-            $upload = $this->em->getRepository(Upload::class)
-                ->findOneBy(['uuid' => $uuid]);
+        foreach ($uuidOrFilenames as $uuidOrFilename) {
+            $upload = $this->em->getRepository(Upload::class)->findOneBy([
+                'uuid' => $uuidOrFilename
+            ]);
+
+            if (!$upload) {
+                $upload = $this->em->getRepository(Upload::class)->findOneBy([
+                    'storedFilename' => $uuidOrFilename
+                ]);
+            }
 
             if (!$upload || $upload->isAttached()) {
                 continue;
