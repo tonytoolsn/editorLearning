@@ -1,7 +1,5 @@
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'summernote/dist/summernote-bs5.min';
-import 'summernote/dist/summernote-bs5.min.css';
+import 'summernote/dist/summernote-lite.min.js';
+import 'summernote/dist/summernote-lite.min.css';
 import 'summernote/dist/lang/summernote-zh-TW.js';
 import '../styles/summernote.css';
 import { APP_URL } from './config.js';

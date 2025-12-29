@@ -229,7 +229,7 @@ class EditorService
 
         foreach ($uploads as $upload) {
             if (!in_array($upload->getUuid(), $currentUuids)) {
-                $upload->delete(); // soft delete
+                $upload->softDelete(); // soft delete
             }
         }
 
