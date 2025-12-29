@@ -1,0 +1,64 @@
+/* 自訂義 Summernote */
+/* 字體大小顯示樣式 */
+.note-current-fontsize {
+    display: inline-block; /* 保证宽度有效 */
+    min-width: 20px; /* 设置最小宽度 */
+    max-width: 20px; /* 设置最大宽度，固定宽度 */
+    overflow: hidden; /* 内容超出隐藏 */
+    text-overflow: ellipsis; /* 超出显示省略号 */
+    white-space: nowrap; /* 不换行 */
+    vertical-align: middle; /* 元素垂直居中对齐（相对于行内文本） */
+}
+
+/* 字體名稱顯示樣式 */
+.note-current-fontname {
+    display: inline-block; /* 保证宽度有效 */
+    min-width: 40px; /* 设置最小宽度 */
+    max-width: 40px; /* 设置最大宽度，固定宽度 */
+    overflow: hidden; /* 内容超出隐藏 */
+    text-overflow: ellipsis; /* 超出显示省略号 */
+    white-space: nowrap; /* 不换行 */
+    vertical-align: middle; /* 元素垂直居中对齐（相对于行内文本） */
+}
+
+/* 虛線按鈕顯示樣式 */
+.note-icon-dash-btn {
+    display: inline-block;
+    width: 20px;
+    height: 2px;
+    border-top: 2px dashed #666;
+    vertical-align: middle;
+}
+
+/* 虛線樣式 */
+.note-custom-dash-hr {
+    border: none;
+    border-top: 1px dashed #999;
+}
+
+/* 引用區塊樣式 */
+.note-custom-blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 17.5px;
+    border-left: 5px solid #eee;
+
+    /* 自訂顏色 */
+    border-left: 5px solid #f86466;
+    background: white;
+}
+
+/* 代碼區塊樣式 */
+.note-custom-pre {
+    display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 1.42857143;
+    color: #333;
+    word-break: break-all;
+    word-wrap: break-word;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

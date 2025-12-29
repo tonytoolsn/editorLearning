@@ -1,0 +1,105 @@
+symfony new summernote --version=7.4
+
+composer require
+composer require symfony/twig-bundle
+composer require symfony/form
+composer require symfony/validator
+composer require symfony/security-bundle
+composer require symfony/mailer --
+composer require symfony/asset
+composer require symfony/webpack-encore-bundle
+composer require symfony/console
+composer require symfony/orm-pack
+composer require doctrine/doctrine-migrations-bundle
+composer require symfony/http-client
+composer require symfony/serializer
+composer require --dev symfony/maker-bundle
+composer require --dev doctrine/doctrine-fixtures-bundle
+composer require --dev symfony/profiler-pack
+composer require symfony/mime
+composer require symfony/uid
+
+// 則一安裝，淨化html
+composer require symfony/html-sanitizer
+composer require ezyang/htmlpurifier
+
+npm install --global yarn
+yarn -v
+yarn install
+
+
+php --ini
+extension=pdo_sqlite
+extension=sqlite3
+extension=fileinfo
+
+php bin/console
+make:user        → 用户结构
+make:migration   → 建表
+migrate
+make:auth        → 登录逻辑
+创建用户
+/login 登录
+
+php bin/console make:security:form-login
+
+composer require gregwar/captcha-bundle
+
+------
+summernote
+
+php bin/console make:form ContentFormType
+
+php bin/console make:controller ContentController
+
+php bin/console make:entity Post
+php bin/console make:crud Post
+
+------
+npm install jquery bootstrap popper.js --save
+yarn add summernote
+yarn add jquery
+yarn add bootstrap
+yarn add popper.js
+
+yarn dev
+yarn watch
+
+//----------Upload
+所以系統的上傳都記錄在此表
+
+php bin/console make:entity
+Upload
+uuid uuid
+storedFilename
+originalFilename
+mimeType    100
+size integer
+-----
+entityType
+entityId  or entityUuid
+fieldName
+
+status 0.草稿、1.儲存完成
+-----
+createdByUserId
+createdByUnitId
+createdAt
+deletedAt
+
+//---------- controller
+
+php bin/console make:controller UploadController
+
+php bin/console make:crud Upload
+
+php bin/console make:migration
+
+upload.fn1401.path: "%kernel.project_dir%/uploads/fn1401"
+uploads.path.fn1401: "%kernel.project_dir%/uploads/fn1401"
+
+App\Service\UploadService
+App\Service\UploadProfilesService
+App\Service\UploadProfiles
+
+

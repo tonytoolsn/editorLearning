@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Upload index{% endblock %}
+
+{% block body %}
+  <h1>Upload index</h1>
+
+  <table class="table" border="1">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Uuid</th>
+        <th>StoredFilename</th>
+        <th>OriginalFilename</th>
+        <th>MimeType</th>
+        <th>CreatedAt</th>
+        <th>DeletedAt</th>
+        <th>FieldName</th>
+        <th>EntityId</th>
+        <th>CreatedByUserId</th>
+        <th>CreatedByUnitId</th>
+        <th>EntityType</th>
+        <th>EntityUuid</th>
+        <th>Status</th>
+        <th>actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for upload in uploads %}
+        <tr>
+          <td>{{ upload.id }}</td>
+          <td>{{ upload.uuid }}</td>
+          <td>{{ upload.storedFilename }}</td>
+          <td>{{ upload.originalFilename }}</td>
+          <td>{{ upload.mimeType }}</td>
+          <td>{{ upload.createdAt ? upload.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+          <td>{{ upload.deletedAt ? upload.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+          <td>{{ upload.fieldName }}</td>
+          <td>{{ upload.entityId }}</td>
+          <td>{{ upload.createdByUserId }}</td>
+          <td>{{ upload.createdByUnitId }}</td>
+          <td>{{ upload.entityType }}</td>
+          <td>{{ upload.entityUuid }}</td>
+          <td>{{ upload.status }}</td>
+          <td>
+            {# <a href="{{ path('app_upload_show', {'id': upload.id}) }}">show</a>
+                    <a href="{{ path('app_upload_edit', {'id': upload.id}) }}">edit</a> #}
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="15">no records found</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{{ path('app_upload_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Upload{% endblock %}
+
+{% block body %}
+    <h1>Upload</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ upload.id }}</td>
+            </tr>
+            <tr>
+                <th>Uuid</th>
+                <td>{{ upload.uuid }}</td>
+            </tr>
+            <tr>
+                <th>StoredFilename</th>
+                <td>{{ upload.storedFilename }}</td>
+            </tr>
+            <tr>
+                <th>OriginalFilename</th>
+                <td>{{ upload.originalFilename }}</td>
+            </tr>
+            <tr>
+                <th>MimeType</th>
+                <td>{{ upload.mimeType }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ upload.createdAt ? upload.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DeletedAt</th>
+                <td>{{ upload.deletedAt ? upload.deletedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>FieldName</th>
+                <td>{{ upload.fieldName }}</td>
+            </tr>
+            <tr>
+                <th>EntityId</th>
+                <td>{{ upload.entityId }}</td>
+            </tr>
+            <tr>
+                <th>CreatedByUserId</th>
+                <td>{{ upload.createdByUserId }}</td>
+            </tr>
+            <tr>
+                <th>CreatedByUnitId</th>
+                <td>{{ upload.createdByUnitId }}</td>
+            </tr>
+            <tr>
+                <th>EntityType</th>
+                <td>{{ upload.entityType }}</td>
+            </tr>
+            <tr>
+                <th>EntityUuid</th>
+                <td>{{ upload.entityUuid }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ upload.status }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_upload_index') }}">back to list</a>
+
+    <a href="{{ path('app_upload_edit', {'id': upload.id}) }}">edit</a>
+
+    {{ include('upload/_delete_form.html.twig') }}
+{% endblock %}
